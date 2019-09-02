@@ -1,0 +1,13 @@
+Package: binf.trrust
+Title: TRRUST utility
+Version: 0.0.0.9000
+Authors@R: person("Anuj", "Gupta", role = c("aut", "cre"),email = "anujg@gatech.edu")
+Description: This package provides utility to access and use data from TRRUST. (http://www.grnpedia.org/trrust). 
+Certain functionality has been borrowed/ modified from https://github.com/biodim/TRRUST_network
+Imports:
+  data.table,
+	igraph,
+	visNetwork
+License: What license it uses
+Encoding: UTF-8
+LazyData: true

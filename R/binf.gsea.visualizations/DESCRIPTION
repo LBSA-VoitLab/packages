@@ -1,0 +1,9 @@
+Package: binf.gsea.visualizations
+Title: Provides utilities for various GSEA visualizations
+Version: 0.0.0.9000
+Authors@R: person("Anuj", "Gupta", email = "ag.anuj1991@gmail.com", role = c("aut", "cre"))
+Description: The output of Broad Institute GSEA could be directly used to create visualizations using this package.
+Depends: R (>= 3.5.2)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true

@@ -1,0 +1,84 @@
+#' gsea_bar_plot Function
+#'
+#' This function allows you to heatmaps for genes specific to genesets
+#' @param gsea_res_folder folder location of GSEA result
+#' @keywords barplot gsea
+#' @export
+#' @examples
+#' gsea_bar_plot()
+
+plot_multi_GSEA_heatmap <- function(gsea_pathnames,name_list,fdr = NULL,pVal = NULL){
+  if(is.null(fdr)) fdr <- 0.25
+  if(is.null(pVal)) pVal <- 0.05
+  
+  df.2 = data.table(stringsAsFactors = FALSE)
+  names = c()
+  for (gsea_results in gsea_pathnames){
+    posList <- list.files(path=gsea_results,pattern="gsea_report_for_.*_pos_.*.xls")
+    negList <- list.files(path=gsea_results,pattern="gsea_report_for_.*_neg_.*.xls")
+    posData <- read.csv2(paste0(gsea_results,"/",posList), header=TRUE,sep="\t")
+    negData <- read.csv2(paste0(gsea_results,"/",negList), header=TRUE,sep="\t")
+    full <- rbind(posData, negData)
+    names <- union(names,as.character(full[(as.numeric(as.character(full$NOM.p.val)) < pVal) & (as.numeric(as.character(full$FDR.q.val)) < fdr),"NAME"]))
+    
+    dt <- data.table(Name = full$NAME,NES = full$NES)
+    if (match(gsea_results,gsea_pathnames) == 1){
+      df.2 <- dt
+      }
+    else {
+      df.2 <- merge(df.2,dt,by = "Name",all = T)
+    }
+  }
+  df <- as.matrix(df.2[df.2$Name %in% names,-1])
+  df[is.na(df)] <- 0
+  row.names(df) <- df.2$Name[df.2$Name %in% names]
+  colnames(df) <- name_list
+
+  return(plot_heatmap(df))
+}
+
+plot_multi_GSEA_heatmap_modular <- function(gsea_pathnames,name_list,fdr = NULL,pVal = NULL){
+  if(is.null(fdr)) fdr <- 0.25
+  if(is.null(pVal)) pVal <- 0.05
+  
+  df.2 = data.table(stringsAsFactors = FALSE)
+  names = c()
+  for (gsea_results in gsea_pathnames){
+    posList <- list.files(path=gsea_results,pattern="gsea_report_for_.*_pos_.*.xls")
+    negList <- list.files(path=gsea_results,pattern="gsea_report_for_.*_neg_.*.xls")
+    posData <- read.csv2(paste0(gsea_results,"/",posList), header=TRUE,sep="\t")
+    negData <- read.csv2(paste0(gsea_results,"/",negList), header=TRUE,sep="\t")
+    full <- rbind(posData, negData)
+    names <- union(names,as.character(full[(as.numeric(as.character(full$NOM.p.val)) < pVal) & (as.numeric(as.character(full$FDR.q.val)) < fdr),"NAME"]))
+    
+    dt <- data.table(Name = full$NAME,NES = full$NES)
+    if (match(gsea_results,gsea_pathnames) == 1){
+      df.2 <- dt
+    }
+    else {
+      df.2 <- merge(df.2,dt,by = "Name",all = T)
+    }
+  }
+  df <- as.matrix(df.2[df.2$Name %in% names,-1])
+  df[is.na(df)] <- 0
+  row.names(df) <- df.2$Name[df.2$Name %in% names]
+  colnames(df) <- name_list
+  
+  df.1 <- df[!grepl(".*:TBD",rownames(df)),]
+  return(plot_heatmap(df.1))
+}
+
+plot_heatmap <- function(df){
+  require(reshape2)
+  require(ggplot2)
+  
+  melted_df <- melt(df)
+  melted_df$value=as.numeric(levels(melted_df$value))[melted_df$value]
+  
+  p <- ggplot(data = melted_df, aes(x=Var2, y=Var1, fill=value)) + 
+    geom_tile(color = "white") +
+    scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+                         midpoint = 0, limit = c(-2.5,2.5), space = "Lab", 
+                         name="NES")
+  return(p)
+}
