@@ -41,7 +41,7 @@ getSignificantGenesetsTable <- function(gsea_res_folder,posCount,negCount,FDRq,p
     FDRq <- FDRq
   }
   if(missing(pV)) {
-    pV <- 0.01
+    pV <- 0.05
   } else {
     pV <- pV
   }

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1588800591487.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "431F0A4C",
+    "lastKnownWriteTime" : 1573951634,
+    "last_content_update" : 1588863869382,
+    "path" : "Z:/projects-bmed/projects/packages/R/binf.rna.utils/R/plot_pca.R",
+    "project_path" : "binf.rna.utils/R/plot_pca.R",
+    "properties" : {
+        "cursorPosition" : "45,48",
+        "scrollLine" : "30"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

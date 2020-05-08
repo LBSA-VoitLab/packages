@@ -1,11 +1,11 @@
-#' gsea_bar_plot Function
+#' plot_gene_set_heatmap Function
 #'
 #' This function allows you to heatmaps for genes specific to genesets
 #' @param gsea_res_folder folder location of GSEA result
 #' @keywords barplot gsea
 #' @export
 #' @examples
-#' gsea_bar_plot()
+#' plot_gene_set_heatmap()
 
 library("reader")
 library("readxl")

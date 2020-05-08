@@ -7,10 +7,12 @@
 #' @examples
 #' getCellNames()
 
+
+#data(cell_markers_db)
 #get cell name from the db
 getCellNames <- function(gene){
   marker_filter = sapply(all_marker_genes,function(x) ifelse(sum(unlist(x) %in% gene) > 0, TRUE, FALSE))
-  
+
   return(levels(factor(cell_markers_db[marker_filter,"cellName"])))
 }
 
@@ -68,19 +70,19 @@ marker_enrich = function (gene_list,category,value,category2,value2)
   all_markers_array= getAllMarkersArray(db)
   cell_type=getCellType(db)
   #print(gene_list)
-  
+
   gene_list=intersect(gene_list,all_markers_array)
-  
+
   #print(gene_list)
-  
+
   pop.size=length(all_markers_array)
   samp.size=length(gene_list)
-  
+
   p.val=rep(0,length(all_markers_list))
   samp.hits=rep(0,length(all_markers_list))
   pop.hits=rep(0,length(all_markers_list))
   genes=list()
-  
+
   for (k in 1:length(all_markers_list))
   {
     samp.hits[k]=length(intersect(gene_list,all_markers_list[[k]]))
@@ -88,12 +90,12 @@ marker_enrich = function (gene_list,category,value,category2,value2)
     p.val[k]=phyper(samp.hits[k], pop.hits[k], pop.size-pop.hits[k], samp.size,lower.tail = FALSE)+dhyper(samp.hits[k], pop.hits[k], pop.size-pop.hits[k], samp.size)
     genes[[k]]=intersect(gene_list,all_markers_list[[k]])
   }
-  
+
   ix=order(p.val)
-  
+
   enrich=data.frame(Cell.type=cell_type, p.value=p.val,overlap=samp.hits,signature=pop.hits)
   enrich=enrich[ix,]
-  
+
   result=list(enrichments=enrich,genes=genes[ix])
-  
+
 }

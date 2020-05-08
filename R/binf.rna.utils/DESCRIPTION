@@ -9,4 +9,5 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     ggrepel,
-    ggplot2
+    ggplot2,
+    ggsci
